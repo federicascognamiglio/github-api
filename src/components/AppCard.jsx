@@ -15,17 +15,13 @@ import { faCircleExclamation } from '@fortawesome/free-solid-svg-icons'
 const truncateText = (text, maxLength) => { return text && text.length > maxLength ? text.slice(0, maxLength) + '...' : text };
 
 function AppCard({ item, filter }) {
-    
+
     // Card Background
     let cardBg
     if (filter === 'repositories') {
         cardBg = 'repo-bg'
-    }
-
-    if (filter === 'users' && item.type === 'Organization') {
-        cardBg = 'org-bg'
-    } else if (filter === 'users' && item.type === 'User') {
-        cardBg = 'client-bg'
+    } else if (filter === 'users') {
+        cardBg = item.type === 'Organization' ? 'org-bg' : 'client-bg'
     }
 
     return (

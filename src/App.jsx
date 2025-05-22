@@ -30,7 +30,9 @@ function App() {
   }
 
   useEffect(() => {
-    getResults(filterValue, searchParam)
+    if (searchParam.trim().length >= 3) {
+      getResults(filterValue, searchParam)
+    }
   }, [filterValue])
 
   return (
@@ -52,7 +54,15 @@ function App() {
 
       {/* Main */}
       <main className="container">
-        <h1 className="main-title text-center">{results.length > 0 && `Your search for: ${searchParam}`}</h1>
+        <h1 className="main-title text-center">
+          {
+            searchParam.trim().length < 3
+              ? "What you're looking for?"
+              : results.length > 0
+                ? `Your results for: ${searchParam}`
+                : "No results found"
+          }
+        </h1>
         <div className="row">
           {
             results && results.map(item =>
