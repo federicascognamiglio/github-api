@@ -35,13 +35,13 @@ function AppCard({ item, filter }) {
                     filter === 'repositories' &&
                     <div>
                         <p className="card-description">{truncateText(item.description, 50)}</p>
-                        <p className='card-details'>
+                        <div className='card-details'>
                             <span className='card-icon'><FontAwesomeIcon icon={faStar} /></span>
                             {item.stargazers_count}
                             <hr className='divider' />
                             <span className='card-icon'><FontAwesomeIcon icon={faCircleExclamation} /></span>
                             {item.open_issues}
-                        </p>
+                        </div>
                     </div>
                 }
             </div>

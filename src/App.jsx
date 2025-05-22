@@ -10,6 +10,8 @@ function App() {
   const [searchParam, setSearchParam] = useState('')
   const [filterValue, setFilterValue] = useState('repositories')
   const [results, setResults] = useState([])
+  const [isLoading, setIsLoading] = useState(false)
+  const [mainTitle, setMainTitle] = useState("What you're looking for?")
 
   // Funzioni
   /**
@@ -24,9 +26,16 @@ function App() {
       return
     }
 
+    setIsLoading(true)
+
     axios.get(`https://api.github.com/search/${filter}?q=${param}`)
-      .then(resp => setResults(resp.data.items))
+      .then(resp => {
+        const data = resp.data.items
+        setResults(data)
+        data.length > 0 ? setMainTitle(`Your results for: ${searchParam}`) : setMainTitle("No results found")
+      })
       .catch(err => console.error(err))
+      .finally(() => setIsLoading(false))
   }
 
   useEffect(() => {
@@ -52,27 +61,26 @@ function App() {
         </nav>
       </header>
 
+      {/* Loader */}
+      {isLoading &&
+        <div className="loader d-flex justify-center align-center">Loading results...</div>
+      }
+
       {/* Main */}
-      <main className="container">
-        <h1 className="main-title text-center">
-          {
-            searchParam.trim().length < 3
-              ? "What you're looking for?"
-              : results.length > 0
-                ? `Your results for: ${searchParam}`
-                : "No results found"
-          }
-        </h1>
-        <div className="row">
-          {
-            results && results.map(item =>
-              <div key={item.id} className="col">
-                <AppCard item={item} filter={filterValue} />
-              </div>
-            )
-          }
-        </div>
-      </main>
+      {!isLoading &&
+        <main className="container">
+          <h1 className="main-title text-center">{mainTitle}</h1>
+          <div className="row">
+            {
+              results && results.map(item =>
+                <div key={item.id} className="col">
+                  <AppCard item={item} filter={filterValue} />
+                </div>
+              )
+            }
+          </div>
+        </main>
+      }
     </>
   )
 }
