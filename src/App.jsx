@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import axios from 'axios'
 
 // Components
@@ -19,14 +19,19 @@ function App() {
    * @param {string} param 
    */
   const getResults = (filter, param) => {
-    if (param === '') {
-      alert('Insert at leat 3 characters')
+    if (param.trim().length < 3) {
+      alert('Insert at least 3 characters')
+      return
     }
+
     axios.get(`https://api.github.com/search/${filter}?q=${param}`)
-    .then(resp => 
-      setResults(resp.data.items)
-    )
+      .then(resp => setResults(resp.data.items))
+      .catch(err => console.error(err))
   }
+
+  useEffect(() => {
+    getResults(filterValue, searchParam)
+  }, [filterValue])
 
   return (
     <>
@@ -39,7 +44,6 @@ function App() {
             <select className="select" name="search-by" id="search-by" onChange={(e) => setFilterValue(e.target.value)}>
               <option value="repositories">Repositories</option>
               <option value="users">Users</option>
-              <option value="topics">Topics</option>
             </select>
             <button className="btn" type="submit" onClick={() => getResults(filterValue, searchParam)}>Search</button>
           </div>
@@ -50,13 +54,13 @@ function App() {
       <main className="container">
         <h1 className="main-title text-center">{results.length > 0 && `Your search for: ${searchParam}`}</h1>
         <div className="row">
-        {
-          results && results.map( item => 
-            <div key={item.id} className="col">
-              <AppCard item={item}/>
-            </div>
-          )
-        }
+          {
+            results && results.map(item =>
+              <div key={item.id} className="col">
+                <AppCard item={item} filter={filterValue} />
+              </div>
+            )
+          }
         </div>
       </main>
     </>
