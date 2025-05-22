@@ -1,12 +1,27 @@
-# React + Vite
+**GitHub API Exercise**
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+- **Brief**:
+Sviluppare una soluzione che permetta di **effettuare ricerche sfruttando le API di GitHub**. Oltre al termine di ricerca vogliamo poter selezionare anche il tipo: solo repository oppure solo utenti/organizzazioni.
 
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- **Milestones**
+    
+    **Milestone 1**
+    Fare la ricerca solo per repository.
+    La ricerca deve partire al click di un pulsante “Cerca”.
+    Mostrare in pagina i nomi dei repository, anche con una grafica minima.
+    
+    **Milestone 2**
+    Permettere di scegliere il tipo di ricerca: repository oppure utenti/organizzazioni.
+    Dare un layout grafico curato alle card.
+    L’aspetto della card dovrà variare in base al risultato mostrato: repository o user/organization.
+    
+    **Milestone 3**
+    Integriamo una validazione minimale: la ricerca deve partire solo se l’utente ha digitato almeno 3 caratteri.
+    Mostriamo un messaggio in caso non venga restituito nessun risultato (es. non esiste una repo con il nome che è stato cercato).
+    Aggiungiamo un loader che sarà mostrato mentre siamo in attesa di ottenere i risultati.
+    
+    **Bonus 1**
+    Implementiamo un **debounce**: appena l’utente smette di digitare nell’input, dopo 700ms parte la chiamata di ricerca all’API.
+    
+    **Bonus 2**
+    La chiamata API base restituisce solo 30 risultati. Integriamo una funzionalità base di paginazione: due pulsanti (avanti / indietro) che ci permettano di navigare tra le pagine.
