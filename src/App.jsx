@@ -7,12 +7,22 @@ import AppCard from "./components/AppCard"
 function App() {
 
   // Variabili di Stato
-  const [searchParam, setSearchParam] = useState('react')
-  const [results, setResults] = useState('')
+  const [searchParam, setSearchParam] = useState('')
+  const [filterValue, setFilterValue] = useState('repositories')
+  const [results, setResults] = useState([])
 
   // Funzioni
-  const getResults = (param) => {
-    axios.get(`https://api.github.com/search/repositories?q=${param}`)
+  /**
+   * Get data from GitHub API request
+   *
+   * @param {string} filter 
+   * @param {string} param 
+   */
+  const getResults = (filter, param) => {
+    if (param === '') {
+      alert('Insert at leat 3 characters')
+    }
+    axios.get(`https://api.github.com/search/${filter}?q=${param}`)
     .then(resp => 
       setResults(resp.data.items)
     )
@@ -26,18 +36,19 @@ function App() {
           <a className="nav-brand" href="/">GitHub API</a>
           <div>
             <input className="input" type="text" name="search-param" value={searchParam} onChange={(e) => setSearchParam(e.target.value)} id="search-param" placeholder="Search..." />
-            <select className="select" name="search-by" id="search-by">
+            <select className="select" name="search-by" id="search-by" onChange={(e) => setFilterValue(e.target.value)}>
               <option value="repositories">Repositories</option>
-              {/* <option value="users">Users</option> */}
+              <option value="users">Users</option>
+              <option value="topics">Topics</option>
             </select>
-            <button className="btn" type="submit" onClick={() => getResults(searchParam)}>Search</button>
+            <button className="btn" type="submit" onClick={() => getResults(filterValue, searchParam)}>Search</button>
           </div>
         </nav>
       </header>
 
       {/* Main */}
       <main className="container">
-        <h1 className="main-title text-center">Your search for: {searchParam}</h1>
+        <h1 className="main-title text-center">{results.length > 0 && `Your search for: ${searchParam}`}</h1>
         <div className="row">
         {
           results && results.map( item => 
